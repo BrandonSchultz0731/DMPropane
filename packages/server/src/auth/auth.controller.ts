@@ -26,4 +26,15 @@ export class AuthController {
 
     return { success: true };
   }
+
+  @Post("logout")
+  logout(@Res({ passthrough: true }) res: any) {
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return { success: true };
+  }
 }
