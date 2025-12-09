@@ -7,7 +7,7 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   });
 
@@ -15,6 +15,6 @@ async function bootstrap() {
   app.use(cookieParser());
 
   await app.listen(3000);
-  console.log("Server is running on http://localhost:3000");
+  console.log("Server is running!");
 }
 bootstrap();
