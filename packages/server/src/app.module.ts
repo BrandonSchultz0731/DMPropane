@@ -14,16 +14,32 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: "postgres",
-        host: config.get<string>("DB_HOST"),
-        port: config.get<number>("DB_PORT"),
-        username: config.get<string>("DB_USERNAME"),
-        password: config.get<string>("DB_PASSWORD"),
-        database: config.get<string>("DB_NAME"),
-        autoLoadEntities: true,
-      }),
+      useFactory: (config: ConfigService) => {
+        const databaseUrl = config.get<string>("DATABASE_URL");
+        if (databaseUrl) {
+          return {
+            type: "postgres",
+            url: databaseUrl,
+            autoLoadEntities: true,
+            synchronize: false,
+            ssl:
+              config.get("NODE_ENV") === "production"
+                ? { rejectUnauthorized: false }
+                : false,
+          };
+        }
+        return {
+          type: "postgres",
+          host: config.get<string>("DB_HOST"),
+          port: config.get<number>("DB_PORT"),
+          username: config.get<string>("DB_USERNAME"),
+          password: config.get<string>("DB_PASSWORD"),
+          database: config.get<string>("DB_NAME"),
+          autoLoadEntities: true,
+        };
+      },
     }),
+
     TypeOrmModule.forFeature([User]),
     AuthModule,
   ],
