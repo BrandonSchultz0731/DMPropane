@@ -50,7 +50,6 @@ export class AuthController {
 
     const nodeEnv = this.configService.get<string>("NODE_ENV");
     const isProduction = nodeEnv === "production";
-    console.log('nodeEnv:', nodeEnv);
 
     res.cookie("access_token", access_token, {
       httpOnly: true,
