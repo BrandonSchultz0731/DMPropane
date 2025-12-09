@@ -10,6 +10,7 @@ import {
 import { UsersService } from "../users/users.service";
 import { User } from "./user.entity";
 import { AuthGuard } from "@nestjs/passport";
+import { UserResponse } from "./user-response.dto";
 
 @Controller("users")
 export class UsersController {
@@ -17,12 +18,12 @@ export class UsersController {
 
   @UseGuards(AuthGuard("jwt"))
   @Get()
-  findAll(): Promise<User[]> {
+  findAll(): Promise<UserResponse[]> {
     return this.usersService.findAll();
   }
 
   @Get(":id")
-  findOne(@Param("id") id: number): Promise<User | null> {
+  findOne(@Param("id") id: number): Promise<UserResponse | null> {
     return this.usersService.findOne(id);
   }
 
@@ -30,7 +31,7 @@ export class UsersController {
   update(
     @Param("id") id: number,
     @Body() user: Partial<User>
-  ): Promise<User | null> {
+  ): Promise<UserResponse | null> {
     return this.usersService.update(id, user);
   }
 

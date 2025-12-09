@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
 import { User } from "../users/user.entity";
+import { UserResponse } from "../users/user-response.dto";
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,7 @@ export class AuthService {
     });
 
     await this.users.save(user);
-    return { id: user.id, email: user.email };
+    return new UserResponse(user);
   }
 
   async login(email: string, password: string) {
@@ -38,6 +39,9 @@ export class AuthService {
       email: user.email,
     });
 
-    return { access_token: token };
+    return {
+      access_token: token,
+      user: new UserResponse(user),
+    };
   }
 }

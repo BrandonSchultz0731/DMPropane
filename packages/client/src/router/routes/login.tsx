@@ -1,4 +1,4 @@
-import { createRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createRoute, Link } from "@tanstack/react-router";
 import { rootRoute } from "./root";
 import {
   Box,
@@ -10,30 +10,19 @@ import {
   Title,
 } from "@mantine/core";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { api } from "../../api";
+import { useLogin } from "../../hooks/useGetUsers";
 
 function LoginPage() {
-  const navigate = useNavigate();
+  const [form, setForm] = useState({ email: "", password: "" });
 
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  const loginMutation = useMutation({
-    mutationFn: async () => {
-      await api.post("/auth/login", form, {
-        withCredentials: true,
-      });
-    },
-    onSuccess: () => {
-      navigate({ to: "/" });
-    },
-  });
+  const loginMutation = useLogin();
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = () => {
+    loginMutation.mutate(form);
   };
 
   return (
@@ -51,10 +40,7 @@ function LoginPage() {
         w={400}
         p="lg"
         bg="white"
-        style={{
-          borderRadius: 16,
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        }}
+        style={{ borderRadius: 16, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}
       >
         <Stack gap="md">
           <Title
@@ -91,7 +77,7 @@ function LoginPage() {
             radius="xl"
             fullWidth
             loading={loginMutation.isPending}
-            onClick={() => loginMutation.mutate()}
+            onClick={handleSubmit}
           >
             Log In
           </Button>

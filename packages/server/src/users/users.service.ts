@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "../users/user.entity";
+import { UserResponse } from "./user-response.dto";
 
 @Injectable()
 export class UsersService {
@@ -10,25 +11,33 @@ export class UsersService {
     private readonly userRepository: Repository<User>
   ) {}
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  // Return all users as DTOs
+  async findAll(): Promise<UserResponse[]> {
+    const users = await this.userRepository.find();
+    return users.map((user) => new UserResponse(user));
   }
 
-  findOne(id: number): Promise<User | null> {
-    return this.userRepository.findOneBy({ id });
+  // Return a single user as DTO or null
+  async findOne(id: number): Promise<UserResponse | null> {
+    const user = await this.userRepository.findOneBy({ id });
+    return user ? new UserResponse(user) : null;
   }
 
-  create(user: Partial<User>): Promise<User> {
+  // Create a new user and return as DTO
+  async create(user: Partial<User>): Promise<UserResponse> {
     const newUser = this.userRepository.create(user);
-    return this.userRepository.save(newUser);
+    const savedUser = await this.userRepository.save(newUser);
+    return new UserResponse(savedUser);
   }
 
-  async update(id: number, user: Partial<User>): Promise<User | null> {
+  // Update an existing user and return as DTO
+  async update(id: number, user: Partial<User>): Promise<UserResponse | null> {
     await this.userRepository.update(id, user);
     return this.findOne(id);
   }
 
-  delete(id: number): Promise<void> {
-    return this.userRepository.delete(id).then(() => undefined);
+  // Delete a user (no DTO needed)
+  async delete(id: number): Promise<void> {
+    await this.userRepository.delete(id);
   }
 }
