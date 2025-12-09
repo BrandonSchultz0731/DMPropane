@@ -1,16 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api";
 import { useNavigate } from "@tanstack/react-router";
+import type { UserResponse } from "@brandon0731/types";
 
 interface LoginForm {
   email: string;
   password: string;
-}
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
 }
 
 const fetchUsers = async () => {
@@ -29,7 +24,7 @@ export const useLogin = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  return useMutation<User, Error, LoginForm>({
+  return useMutation<UserResponse, Error, LoginForm>({
     mutationFn: async (form) => {
       const res = await api.post("/auth/login", form, {
         withCredentials: true,
@@ -44,7 +39,7 @@ export const useLogin = () => {
 };
 
 export const useUser = () => {
-  return useQuery<User>({
+  return useQuery<UserResponse>({
     queryKey: ["currentUser"],
     queryFn: async () => {
       const res = await api.get("/auth/me", { withCredentials: true });
