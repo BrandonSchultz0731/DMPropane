@@ -23,11 +23,11 @@ function LoginPage() {
 
   const loginMutation = useMutation({
     mutationFn: async () => {
-      const res = await api.post("/auth/login", form);
-      return res.data;
+      await api.post("/auth/login", form, {
+        withCredentials: true,
+      });
     },
-    onSuccess: (data) => {
-      localStorage.setItem("token", data.access_token);
+    onSuccess: () => {
       navigate({ to: "/" });
     },
   });

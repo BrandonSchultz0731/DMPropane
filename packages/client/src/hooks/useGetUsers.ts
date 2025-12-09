@@ -1,19 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import API_BASE_URL from "../config/apiConfig";
+import { api } from "../api";
 
 const fetchUsers = async () => {
-  const token = localStorage.getItem("token");
-  const response = await fetch(`${API_BASE_URL}/users`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return response.json();
+  const res = await api.get("/users");
+  return res.data;
 };
 
 export const useGetUsers = () => {
-  return useQuery({ queryKey: ["exampleData"], queryFn: fetchUsers });
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsers,
+  });
 };
