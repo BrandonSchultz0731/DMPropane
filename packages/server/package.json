@@ -37,6 +37,10 @@
   "scripts": {
     "build": "nest build",
     "start": "node dist/main.js",
-    "dev": "nest start --watch"
+    "dev": "nest start --watch",
+    "migration:run": "ts-node src/run-migrations.ts",
+    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/data-source.ts",
+    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/data-source.ts",
+    "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create"
   }
 }

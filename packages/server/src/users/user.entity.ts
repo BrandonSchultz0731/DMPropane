@@ -12,6 +12,9 @@ export class User implements UserType {
   @Column({ unique: true })
   email!: string;
 
+  @Column({ type: "text", nullable: true })
+  phoneNumber?: string;
+
   @Column({ type: "text" })
   password!: string;
 
