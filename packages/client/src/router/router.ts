@@ -7,6 +7,8 @@ import { pricingRoute } from "./routes/pricing";
 import { contactRoute } from "./routes/contact";
 import { loginRoute } from "./routes/login";
 import { signupRoute } from "./routes/signup";
+import { dashboardRoute } from "./routes/dashboard";
+
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -15,13 +17,7 @@ const routeTree = rootRoute.addChildren([
   contactRoute,
   loginRoute,
   signupRoute,
+  dashboardRoute,
 ]);
 
 export const router = createRouter({ routeTree });
-
-// Register types
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}

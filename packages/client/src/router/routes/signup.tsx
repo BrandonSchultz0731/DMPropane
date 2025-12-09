@@ -9,6 +9,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { ROUTES } from "../../routes/routes";
 
 function SignUpPage() {
   return (
@@ -90,6 +91,6 @@ function SignUpPage() {
 
 export const signupRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "signup",
+  path: ROUTES.SIGNUP,
   component: SignUpPage,
 });

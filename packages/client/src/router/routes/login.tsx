@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { useLogin } from "../../hooks/useGetUsers";
+import { ROUTES } from "../../routes/routes";
 
 function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -110,6 +111,6 @@ function LoginPage() {
 
 export const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "login",
+  path: ROUTES.LOGIN,
   component: LoginPage,
 });
