@@ -1,19 +1,21 @@
 import {
   Controller,
   Get,
-  Post,
   Put,
   Delete,
   Param,
   Body,
+  UseGuards,
 } from "@nestjs/common";
-import { UsersService } from "../services/users.service";
-import { User } from "../entities/user.entity";
+import { UsersService } from "../users/users.service";
+import { User } from "./user.entity";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(AuthGuard("jwt"))
   @Get()
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
@@ -22,11 +24,6 @@ export class UsersController {
   @Get(":id")
   findOne(@Param("id") id: number): Promise<User | null> {
     return this.usersService.findOne(id);
-  }
-
-  @Post()
-  create(@Body() user: Partial<User>): Promise<User> {
-    return this.usersService.create(user);
   }
 
   @Put(":id")

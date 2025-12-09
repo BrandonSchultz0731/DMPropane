@@ -1,4 +1,4 @@
-import { createRoute, Link } from "@tanstack/react-router";
+import { createRoute, Link, useNavigate } from "@tanstack/react-router";
 import { rootRoute } from "./root";
 import {
   Box,
@@ -9,8 +9,33 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../../api";
 
 function LoginPage() {
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: async () => {
+      const res = await api.post("/auth/login", form);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.access_token);
+      navigate({ to: "/" });
+    },
+  });
+
+  const handleChange = (field: string, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
   return (
     <Box
       w="100vw"
@@ -47,6 +72,8 @@ function LoginPage() {
             placeholder="Enter your email"
             size="md"
             required
+            value={form.email}
+            onChange={(e) => handleChange("email", e.currentTarget.value)}
           />
 
           <TextInput
@@ -55,11 +82,25 @@ function LoginPage() {
             type="password"
             size="md"
             required
+            value={form.password}
+            onChange={(e) => handleChange("password", e.currentTarget.value)}
           />
 
-          <Button size="md" radius="xl" fullWidth>
+          <Button
+            size="md"
+            radius="xl"
+            fullWidth
+            loading={loginMutation.isPending}
+            onClick={() => loginMutation.mutate()}
+          >
             Log In
           </Button>
+
+          {loginMutation.isError && (
+            <Text size="sm" c="red" ta="center">
+              Invalid email or password
+            </Text>
+          )}
 
           <Group justify="center">
             <Text size="sm" color="dimmed">
