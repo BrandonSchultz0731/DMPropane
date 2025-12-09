@@ -1,14 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-}
+import { User as UserType } from "@brandon0731/types";
 
 @Entity({ name: "users" })
-export class User implements User {
+export class User implements UserType {
   @PrimaryGeneratedColumn()
   id!: number;
 
