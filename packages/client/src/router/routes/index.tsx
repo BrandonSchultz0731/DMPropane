@@ -1,11 +1,8 @@
 import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from "./root";
 import { Box, Button, Grid, Stack, Text, Title } from "@mantine/core";
-import { useGetUsers } from "../../hooks/useGetUsers";
 
 function HomePage() {
-  const { data } = useGetUsers();
-  console.log(data);
   return (
     <Box
       bg="gray.0"
