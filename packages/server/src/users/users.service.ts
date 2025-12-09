@@ -23,13 +23,6 @@ export class UsersService {
     return user ? new UserResponse(user) : null;
   }
 
-  // Create a new user and return as DTO
-  async create(user: Partial<User>): Promise<UserResponse> {
-    const newUser = this.userRepository.create(user);
-    const savedUser = await this.userRepository.save(newUser);
-    return new UserResponse(savedUser);
-  }
-
   // Update an existing user and return as DTO
   async update(id: number, user: Partial<User>): Promise<UserResponse | null> {
     await this.userRepository.update(id, user);
