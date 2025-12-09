@@ -10,12 +10,10 @@ import {
   Paper,
   useMantineTheme,
 } from "@mantine/core";
-import { useUser } from "../../hooks/useGetUsers";
+import { ROUTES } from "../../routes/routes";
 
 function HomePage() {
   const theme = useMantineTheme();
-  const { data } = useUser();
-  console.log(data);
 
   return (
     <Box bg="gray.0">
@@ -197,6 +195,6 @@ function HomePage() {
 
 export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/",
+  path: ROUTES.HOME,
   component: HomePage,
 });

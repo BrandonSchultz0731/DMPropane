@@ -4,7 +4,7 @@ import { Header } from "../../components/Header";
 
 export const rootRoute = createRootRoute({
   component: () => (
-    <AppShell w="100vw" header={{ height: 70 }}>
+    <AppShell w="100vw" header={{ height: 70 }} style={{ position: "relative" }}>
       <Header />
       <AppShell.Main>
         <Outlet />

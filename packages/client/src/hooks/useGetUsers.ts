@@ -2,23 +2,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api";
 import { useNavigate } from "@tanstack/react-router";
 import type { UserResponse } from "@brandon0731/types";
+import { ROUTE_PATHS } from "../routes/routes";
 
 interface LoginForm {
   email: string;
   password: string;
 }
-
-const fetchUsers = async () => {
-  const res = await api.get("/users");
-  return res.data;
-};
-
-export const useGetUsers = () => {
-  return useQuery({
-    queryKey: ["users"],
-    queryFn: fetchUsers,
-  });
-};
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -33,13 +22,13 @@ export const useLogin = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      navigate({ to: "/" });
+      navigate({ to: ROUTE_PATHS.DASHBOARD });
     },
   });
 };
 
 export const useUser = () => {
-  return useQuery<UserResponse>({
+  return useQuery<UserResponse | null>({
     queryKey: ["currentUser"],
     queryFn: async () => {
       const res = await api.get("/auth/me", { withCredentials: true });
