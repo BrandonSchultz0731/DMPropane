@@ -9,8 +9,22 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { useState } from "react";
+import { useLogin } from "../../hooks/useGetUsers";
 
 function LoginPage() {
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  const loginMutation = useLogin();
+
+  const handleChange = (field: string, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = () => {
+    loginMutation.mutate(form);
+  };
+
   return (
     <Box
       w="100vw"
@@ -26,10 +40,7 @@ function LoginPage() {
         w={400}
         p="lg"
         bg="white"
-        style={{
-          borderRadius: 16,
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        }}
+        style={{ borderRadius: 16, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}
       >
         <Stack gap="md">
           <Title
@@ -47,6 +58,8 @@ function LoginPage() {
             placeholder="Enter your email"
             size="md"
             required
+            value={form.email}
+            onChange={(e) => handleChange("email", e.currentTarget.value)}
           />
 
           <TextInput
@@ -55,11 +68,25 @@ function LoginPage() {
             type="password"
             size="md"
             required
+            value={form.password}
+            onChange={(e) => handleChange("password", e.currentTarget.value)}
           />
 
-          <Button size="md" radius="xl" fullWidth>
+          <Button
+            size="md"
+            radius="xl"
+            fullWidth
+            loading={loginMutation.isPending}
+            onClick={handleSubmit}
+          >
             Log In
           </Button>
+
+          {loginMutation.isError && (
+            <Text size="sm" c="red" ta="center">
+              Invalid email or password
+            </Text>
+          )}
 
           <Group justify="center">
             <Text size="sm" color="dimmed">

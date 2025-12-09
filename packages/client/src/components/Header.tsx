@@ -2,8 +2,21 @@ import { AppShell, Container, Group, Button, Text, Box } from "@mantine/core";
 import { appConfig } from "../config/appConfig";
 import { COLORS } from "../config/designTokens";
 import { Link } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "../api";
 
 export function Header() {
+  const loginMutation = useMutation({
+    mutationFn: async () => {
+      await api.post(
+        "/auth/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+    },
+  });
   return (
     <AppShell.Header>
       <Container size="lg" h="100%">
@@ -50,6 +63,9 @@ export function Header() {
 
           {/* CTA */}
           <Group gap="sm">
+            <Button onClick={() => loginMutation.mutate()} variant="subtle">
+              Log out
+            </Button>
             <Button variant="subtle" component={Link} to="/login">
               Log in
             </Button>

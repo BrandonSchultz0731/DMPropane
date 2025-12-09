@@ -1,22 +1,31 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "./entities/user.entity";
-import { UsersService } from "./services/users.service";
-import { UsersController } from "./controllers/users.controller";
+import { User } from "./users/user.entity";
+import { UsersService } from "./users/users.service";
+import { UsersController } from "./users/users.controller";
+import { AuthModule } from "./auth/auth.module";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: "postgres",
-      host: "localhost",
-      port: 5432,
-      username: "dmpropane_user",
-      password: "dmpropane_password",
-      database: "dmpropane_db",
-      autoLoadEntities: true,
-      synchronize: true, // Disable in production
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: "postgres",
+        host: config.get<string>("DB_HOST"),
+        port: config.get<number>("DB_PORT"),
+        username: config.get<string>("DB_USERNAME"),
+        password: config.get<string>("DB_PASSWORD"),
+        database: config.get<string>("DB_NAME"),
+        autoLoadEntities: true,
+      }),
     }),
     TypeOrmModule.forFeature([User]),
+    AuthModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],
