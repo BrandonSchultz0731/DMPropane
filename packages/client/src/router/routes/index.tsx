@@ -1,194 +1,195 @@
 import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from "./root";
-import { Box, Button, Grid, Stack, Text, Title } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Grid,
+  Stack,
+  Text,
+  Title,
+  Paper,
+  useMantineTheme,
+} from "@mantine/core";
+import { useUser } from "../../hooks/useGetUsers";
 
 function HomePage() {
+  const theme = useMantineTheme();
+  const { data } = useUser();
+  console.log(data);
+
   return (
-    <Box
-      bg="gray.0"
-      style={{
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <Box w="100%" px="lg">
-        <Grid align="center" gutter={60}>
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Stack gap="xl">
-              <Title fw={900} style={{ fontSize: "clamp(3rem, 8vw, 4.5rem)" }}>
+    <Box bg="gray.0">
+      {/* Hero Section */}
+      <Box
+        style={{
+          padding: "6rem 1rem",
+          backgroundImage: `linear-gradient(180deg, ${theme.colors.brand[0]}, #ffffff 100%)`,
+        }}
+      >
+        <Grid justify="space-between" gutter={60}>
+          {/* Left Side */}
+          <Grid.Col span={{ base: 12, md: 5 }}>
+            <Stack gap="xl" justify="center">
+              <Title
+                fw={900}
+                style={{
+                  fontSize: "clamp(3rem, 6vw, 4rem)",
+                  lineHeight: 1.1,
+                  textAlign: "left",
+                }}
+              >
                 Got Gas?
               </Title>
-
-              <Text size="lg" c="dimmed" lh={1.6} maw={480}>
-                Monitor your propane levels in real time and never run out
-                again. Smart tracking for homes and businesses.
+              <Text size="lg" c="dimmed" maw={400}>
+                Track your propane levels in real-time with our smart monitoring
+                system. Reliable service for homes and businesses.
               </Text>
-
-              <Button size="lg" radius="xl" w="fit-content">
+              <Button
+                size="lg"
+                radius="xl"
+                style={{
+                  backgroundImage: `linear-gradient(90deg, ${theme.colors.gradient[0]}, ${theme.colors.gradient[9]})`,
+                  color: "white",
+                  fontWeight: 700,
+                  padding: "1rem 2rem",
+                  maxWidth: 200,
+                  border: "none", // ensure no border
+                }}
+              >
                 Get Started
               </Button>
             </Stack>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
+
+          {/* Right Side */}
+          <Grid.Col span={{ base: 12, md: 7 }}>
             <Box
-              w="100%"
-              h={420}
-              bg="brand.1"
               style={{
-                borderRadius: 32,
                 position: "relative",
+                width: "100%",
+                height: 450,
+                borderRadius: 32,
                 overflow: "hidden",
+                backgroundImage: `linear-gradient(135deg, ${theme.colors.lightRed[0]}, ${theme.colors.lightYellow[0]})`,
               }}
             >
               <Box
-                w={200}
-                h={200}
-                bg="brand.3"
                 style={{
-                  borderRadius: "50%",
                   position: "absolute",
-                  top: -40,
-                  left: -40,
+                  top: -60,
+                  left: -60,
+                  width: 180,
+                  height: 180,
+                  borderRadius: "50%",
+                  background: theme.colors.mediumRed[0],
+                  transform: "rotate(25deg)",
                 }}
               />
-
               <Box
-                w={240}
-                h={320}
-                bg="brand.6"
                 style={{
-                  borderRadius: "120px",
                   position: "absolute",
-                  right: 40,
                   bottom: 20,
+                  right: 20,
+                  width: 260,
+                  height: 300,
+                  borderRadius: 130,
+                  background: theme.colors.mediumYellow[0],
                 }}
               />
             </Box>
           </Grid.Col>
         </Grid>
-        <Box mt={80}>
-          <Title
-            mb="md"
-            style={{
-              fontSize: "clamp(3rem, 8vw, 4.5rem)",
-              textAlign: "center",
-            }}
-          >
-            About Us
-          </Title>
-          <Text maw={600} mx="auto" c="dimmed" style={{ textAlign: "center" }}>
-            At DMPropane, we are committed to providing reliable propane
-            services to homes and businesses. Our mission is to ensure you never
-            run out of propane when you need it most.
-          </Text>
-        </Box>
-        <Box mt={80}>
-          <Title
-            mb="md"
-            style={{
-              textAlign: "center",
-              fontSize: "clamp(3rem, 8vw, 4.5rem)",
-            }}
-          >
-            How We Can Help
-          </Title>
-          <Grid gutter={40} justify="center">
-            <Grid.Col span={4}>
-              <Stack align="center">
+      </Box>
+
+      {/* How We Can Help */}
+      <Box mt={100} px="sm">
+        <Title
+          style={{ fontSize: "clamp(2.5rem, 6vw, 4rem)", textAlign: "center" }}
+          mb="xl"
+        >
+          How We Can Help
+        </Title>
+        <Grid gutter={40} justify="center">
+          {[
+            {
+              title: "Propane Delivery",
+              desc: "Flexible delivery options to meet your needs.",
+              color: theme.colors.mediumRed[0],
+            },
+            {
+              title: "Tank Installation",
+              desc: "Professional installation for homes and businesses.",
+              color: theme.colors.mediumYellow[0],
+            },
+            {
+              title: "Customer Support",
+              desc: "24/7 support to assist with all your propane needs.",
+              color: theme.colors.mediumGreen[0],
+            },
+          ].map((service) => (
+            <Grid.Col span={{ base: 12, md: 4 }} key={service.title}>
+              <Paper
+                shadow="md"
+                radius="lg"
+                p="xl"
+                style={{
+                  transition: "all 0.3s ease",
+                  cursor: "pointer",
+                  textAlign: "center",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "translateY(-10px)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "translateY(0px)")
+                }
+              >
                 <Box
                   w={80}
                   h={80}
-                  bg="brand.3"
-                  style={{ borderRadius: "50%" }}
+                  mx="auto"
+                  mb="md"
+                  style={{
+                    borderRadius: "50%",
+                    background: service.color,
+                  }}
                 />
-                <Text fw={700}>Propane Delivery</Text>
-                <Text c="dimmed" style={{ textAlign: "center" }}>
-                  Flexible delivery options to meet your needs.
-                </Text>
-              </Stack>
+                <Text fw={700}>{service.title}</Text>
+                <Text c="dimmed">{service.desc}</Text>
+              </Paper>
             </Grid.Col>
-            <Grid.Col span={4}>
-              <Stack align="center">
-                <Box
-                  w={80}
-                  h={80}
-                  bg="brand.3"
-                  style={{ borderRadius: "50%" }}
-                />
-                <Text fw={700}>Tank Installation</Text>
-                <Text c="dimmed" style={{ textAlign: "center" }}>
-                  Professional installation for homes and businesses.
-                </Text>
-              </Stack>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Stack align="center">
-                <Box
-                  w={80}
-                  h={80}
-                  bg="brand.3"
-                  style={{ borderRadius: "50%" }}
-                />
-                <Text fw={700}>Customer Support</Text>
-                <Text c="dimmed" style={{ textAlign: "center" }}>
-                  24/7 support to assist with all your propane needs.
-                </Text>
-              </Stack>
-            </Grid.Col>
-          </Grid>
-        </Box>
-        <Box mt={80}>
-          <Title
-            mb="md"
-            style={{
-              textAlign: "center",
-              fontSize: "clamp(3rem, 8vw, 4.5rem)",
-            }}
-          >
-            Our Services
-          </Title>
-          <Text maw={600} mx="auto" c="dimmed" style={{ textAlign: "center" }}>
-            From propane delivery to tank installation, we offer a wide range of
-            services to keep your home or business running smoothly.
-          </Text>
-        </Box>
-        <Box mt={80}>
-          <Title
-            mb="md"
-            style={{
-              textAlign: "center",
-              fontSize: "clamp(3rem, 8vw, 4.5rem)",
-            }}
-          >
-            Why Choose Us
-          </Title>
-          <Grid gutter={40} justify="center">
-            <Grid.Col span={4}>
-              <Stack align="center">
-                <Text fw={700}>Reliable Service</Text>
-                <Text c="dimmed" style={{ textAlign: "center" }}>
-                  Count on us to deliver propane when you need it most.
-                </Text>
-              </Stack>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Stack align="center">
-                <Text fw={700}>Safety First</Text>
-                <Text c="dimmed" style={{ textAlign: "center" }}>
-                  Your safety is our top priority.
-                </Text>
-              </Stack>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Stack align="center">
-                <Text fw={700}>Digital Tools</Text>
-                <Text c="dimmed" style={{ textAlign: "center" }}>
-                  Manage your propane services online with ease.
-                </Text>
-              </Stack>
-            </Grid.Col>
-          </Grid>
-        </Box>
+          ))}
+        </Grid>
+      </Box>
+
+      {/* CTA Section */}
+      <Box
+        mt={100}
+        py={60}
+        style={{
+          backgroundImage: `linear-gradient(90deg, ${theme.colors.gradient[0]}, ${theme.colors.gradient[9]})`,
+          textAlign: "center",
+          color: "white",
+        }}
+      >
+        <Title style={{ fontSize: "clamp(2.5rem, 6vw, 3.5rem)" }}>
+          Ready to Get Started?
+        </Title>
+        <Text size="lg" mt="md">
+          Join hundreds of satisfied customers who trust DMPropane.
+        </Text>
+        <Button
+          size="lg"
+          radius="xl"
+          style={{
+            marginTop: 24,
+            backgroundColor: "white",
+            color: theme.colors.gradient[0],
+            fontWeight: 700,
+          }}
+        >
+          Sign Up Now
+        </Button>
       </Box>
     </Box>
   );
