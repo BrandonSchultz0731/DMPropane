@@ -96,7 +96,7 @@ function LoginPage() {
               component={Link}
               to="/signup"
               size="sm"
-              color="brand.6"
+              c="brand.6"
               style={{ cursor: "pointer" }}
             >
               Sign Up
