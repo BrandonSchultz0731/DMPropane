@@ -1,10 +1,10 @@
 import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from "./root";
 import { Box, Button, Grid, Stack, Text, Title } from "@mantine/core";
-import { useExampleData } from "../../hooks/useExampleData";
+import { useGetUsers } from "../../hooks/useGetUsers";
 
 function HomePage() {
-  const { data } = useExampleData();
+  const { data } = useGetUsers();
   console.log(data);
   return (
     <Box
