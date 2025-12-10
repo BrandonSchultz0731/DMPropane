@@ -6,9 +6,9 @@ import {
   UseGuards,
   Get,
   Req,
+  BadRequestException,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { AuthGuard } from "@nestjs/passport";
 import { UsersService } from "../users/users.service";
 import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 import { ConfigService } from "@nestjs/config";
@@ -22,10 +22,10 @@ export class AuthController {
     private configService: ConfigService
   ) {}
 
-  @UseGuards(AuthGuard("jwt"))
+  @UseGuards(SmartJwtGuard)
   @Get("me")
   async me(@Req() req: any) {
-    const user = await this.usersSerice.findOne(req.user.id);
+    const user = await this.usersSerice.findOne(req.user.sub);
     if (!user) {
       throw new Error("User not found");
     }
@@ -34,7 +34,10 @@ export class AuthController {
   
   @Post("signup")
   signup(@Body() body: { name: string; email: string; password: string }) {
-    return this.auth.signup(body.name, body.email, body.password);
+    if (!body.name || !body.email || !body.password ) {
+      throw new BadRequestException('You must fill out all fields')
+    }
+    return this.auth.signup(body.name, body.email.toLowerCase(), body.password);
   }
 
   @UseGuards(ThrottlerGuard)
@@ -45,7 +48,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: any
   ) {
     const { accessToken, refreshToken, user } = await this.auth.login(
-      body.email,
+      body.email.toLowerCase(),
       body.password
     );
 
@@ -56,14 +59,14 @@ export class AuthController {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 15,
     });
     
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
     return { user };
@@ -88,6 +91,8 @@ export class AuthController {
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
     });
+
+    req.user = null
 
     return { success: true };
   }
