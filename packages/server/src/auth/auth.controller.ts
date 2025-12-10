@@ -12,6 +12,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { UsersService } from "../users/users.service";
 import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 import { ConfigService } from "@nestjs/config";
+import { SmartJwtGuard } from "./smartJwt.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -43,7 +44,7 @@ export class AuthController {
     @Body() body: { email: string; password: string },
     @Res({ passthrough: true }) res: any
   ) {
-    const { access_token, user } = await this.auth.login(
+    const { accessToken, refreshToken, user } = await this.auth.login(
       body.email,
       body.password
     );
@@ -51,7 +52,14 @@ export class AuthController {
     const nodeEnv = this.configService.get<string>("NODE_ENV");
     const isProduction = nodeEnv === "production";
 
-    res.cookie("access_token", access_token, {
+    res.cookie("access_token", accessToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      maxAge: 1000 * 60 * 60 * 24,
+    });
+    
+    res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
@@ -61,12 +69,21 @@ export class AuthController {
     return { user };
   }
 
+  @UseGuards(SmartJwtGuard)
   @Post("logout")
-  logout(@Res({ passthrough: true }) res: any) {
+  async logout(@Res({ passthrough: true }) res: any, @Req() req: any) {
+    const userId = req.user?.sub
+    await this.auth.logout(userId)
     const nodeEnv = this.configService.get<string>("NODE_ENV");
     const isProduction = nodeEnv === "production";
 
     res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+    });
+
+    res.clearCookie("refresh_token", {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",

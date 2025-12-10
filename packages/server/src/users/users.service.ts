@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "../users/user.entity";
@@ -23,8 +23,16 @@ export class UsersService {
     return user ? new UserResponse(user) : null;
   }
 
-  // Update an existing user and return as DTO
-  async update(id: number, user: Partial<User>): Promise<UserResponse | null> {
+  async findEntity(id: number): Promise<User | null> {
+    return await this.userRepository.findOneBy({ id })
+  }
+
+  async updateRefreshToken(id: number, refreshTokenHash: string | null): Promise<UserResponse | null> {
+    const user = await this.userRepository.findOneBy({ id })
+    if (!user) {
+      throw new NotFoundException('User not found')
+    }
+    user.refreshTokenHash = refreshTokenHash
     await this.userRepository.update(id, user);
     return this.findOne(id);
   }
