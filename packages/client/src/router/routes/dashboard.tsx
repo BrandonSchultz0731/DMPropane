@@ -1,6 +1,7 @@
-import { Box, Stack, Title, Text, Paper } from "@mantine/core";
+import { Box, Stack, Title, Text, Paper, Button } from "@mantine/core";
 import { useUser } from "../../hooks/useGetUsers";
 import { createProtectedRoute } from "../utils/createProtectedRoute";
+import { api } from "../../api";
 
 function DashboardPage() {
   const { data: user, isLoading } = useUser();
@@ -51,6 +52,7 @@ function DashboardPage() {
           </Stack>
         </Paper>
       </Stack>
+      <Button onClick={() => api.get('/users/protected/profile', { withCredentials: true })}>Test</Button>
     </Box>
   );
 }
