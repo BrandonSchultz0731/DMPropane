@@ -47,7 +47,7 @@ export class AuthController {
     @Body() body: { email: string; password: string },
     @Res({ passthrough: true }) res: any
   ) {
-    const { accessToken, refreshToken, user } = await this.auth.login(
+    const { accessToken, user } = await this.auth.login(
       body.email.toLowerCase(),
       body.password
     );
@@ -59,14 +59,7 @@ export class AuthController {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
-      maxAge: 1000 * 60 * 15,
-    });
-    
-    res.cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "none" : "lax",
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      maxAge: Number(this.configService.get('JWT_MAX_AGE_MS')),
     });
 
     return { user };
@@ -75,18 +68,10 @@ export class AuthController {
   @UseGuards(SmartJwtGuard)
   @Post("logout")
   async logout(@Res({ passthrough: true }) res: any, @Req() req: any) {
-    const userId = req.user?.sub
-    await this.auth.logout(userId)
     const nodeEnv = this.configService.get<string>("NODE_ENV");
     const isProduction = nodeEnv === "production";
 
     res.clearCookie("access_token", {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "none" : "lax",
-    });
-
-    res.clearCookie("refresh_token", {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
