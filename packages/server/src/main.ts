@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS
   app.enableCors({
     origin: [process.env.CLIENT_URL, 'https://www.dmpropane.railway.internal', 'https://up.railway.app'],
     credentials: true,
