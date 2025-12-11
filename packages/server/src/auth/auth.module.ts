@@ -20,7 +20,7 @@ import { SmartJwtGuard } from "./smartJwt.guard";
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>("JWT_SECRET"),
-        signOptions: { expiresIn: "15m" },
+        signOptions: { expiresIn: config.get("JWT_EXPIRES_IN") },
       }),
     }),
   ],

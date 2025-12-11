@@ -27,16 +27,6 @@ export class UsersService {
     return await this.userRepository.findOneBy({ id })
   }
 
-  async updateRefreshToken(id: number, refreshTokenHash: string | null): Promise<UserResponse | null> {
-    const user = await this.userRepository.findOneBy({ id })
-    if (!user) {
-      throw new NotFoundException('User not found')
-    }
-    user.refreshTokenHash = refreshTokenHash
-    await this.userRepository.update(id, user);
-    return this.findOne(id);
-  }
-
   // Delete a user (no DTO needed)
   async delete(id: number): Promise<void> {
     await this.userRepository.delete(id);

@@ -18,9 +18,6 @@ export class User implements UserType {
   @Column({ type: "text" })
   password!: string;
 
-  @Column({ type: 'text', nullable: true })
-  refreshTokenHash?: string | null;
-
   public constructor(partial: Partial<User>) {
     Object.assign(this, partial);
   }
