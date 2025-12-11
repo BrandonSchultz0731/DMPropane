@@ -39,7 +39,7 @@ import {
       const isProduction = this.configService.get("NODE_ENV") === "production";
       res.cookie("access_token", newAccessToken, {
         httpOnly: true,
-        secure: isProduction,
+        secure: isProduction ? 'true' : 'false',
         sameSite: isProduction ? "none" : "lax",
         maxAge: Number(this.configService.get('JWT_MAX_AGE_MS')),
       });

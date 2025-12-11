@@ -57,7 +57,7 @@ export class AuthController {
 
     res.cookie("access_token", accessToken, {
       httpOnly: true,
-      secure: isProduction,
+      secure: isProduction ? 'true' : 'false',
       sameSite: isProduction ? "none" : "lax",
       maxAge: Number(this.configService.get('JWT_MAX_AGE_MS')),
     });
@@ -73,7 +73,7 @@ export class AuthController {
 
     res.clearCookie("access_token", {
       httpOnly: true,
-      secure: isProduction,
+      secure: isProduction ? 'true' : 'false',
       sameSite: isProduction ? "none" : "lax",
     });
 
