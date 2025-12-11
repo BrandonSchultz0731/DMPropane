@@ -27,7 +27,7 @@ export class AuthService {
       throw new UnauthorizedException()
     }
 
-    return this.signIn(user)
+    return this.signIn(cleanedUser(user))
   }
 
   async validateUser(input: AuthInput): Promise<User | null> {
@@ -42,18 +42,18 @@ export class AuthService {
     return null
   }
 
-  async signIn(user: User): Promise<AuthResult> {
+  async signIn(user: ReturnType<typeof cleanedUser>): Promise<AuthResult> {
+    if (!user) throw new UnauthorizedException()
     const tokenPayload = {
       sub: user.id,
       email: user.email
     }
     const accessToken = await this.jwtService.signAsync(tokenPayload)
-    const cleanUser = cleanedUser(user)
-    if (!cleanUser) {
+    if (!user) {
       throw new UnauthorizedException()
     }
     return {
-      ...cleanUser,
+      ...user,
       accessToken,
     }
   }
