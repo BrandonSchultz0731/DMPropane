@@ -5,8 +5,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "../users/user.entity";
 import { UsersService } from "../users/users.service";
 import { AuthService } from "./auth.service";
-import { AuthController } from "./auth.controller";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { PassportAuthController } from "./passport-auth.controller";
+import { LocalStrategry } from "./strategies/local.strategy";
+import { JwtStrategy } from "./strategies/jwt.strategy";
 
 @Module({
   imports: [
@@ -22,8 +24,8 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
       }),
     }),
   ],
-  providers: [AuthService, UsersService],
-  controllers: [AuthController],
+  providers: [AuthService, UsersService, LocalStrategry, JwtStrategy],
+  controllers: [PassportAuthController],
   exports: [
     AuthService,
     JwtModule
