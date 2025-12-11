@@ -15,9 +15,12 @@ export const useLogin = () => {
 
   return useMutation<UserResponse, Error, LoginForm>({
     mutationFn: async (form) => {
-      const res = await api.post("/auth/login", form, {
-        withCredentials: true,
-      });
+      const res = await api.post("/auth/login", form);
+      const token = res.data.accessToken;
+      // TODO: do this a better way
+      if (token) {
+        localStorage.setItem('auth', token)
+      }
       return res.data.user;
     },
     onSuccess: () => {
@@ -31,7 +34,7 @@ export const useUser = () => {
   return useQuery<UserResponse | null>({
     queryKey: ["currentUser"],
     queryFn: async () => {
-      const res = await api.get("/auth/me", { withCredentials: true });
+      const res = await api.get("/auth/me");
       return res.data;
     },
     staleTime: 5 * 60 * 1000, // cache for 5 minutes
