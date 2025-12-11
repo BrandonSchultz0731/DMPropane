@@ -23,8 +23,6 @@ import {
       const access = req.cookies?.access_token;
       const refresh = req.cookies?.refresh_token;
   
-      if (!access) throw new UnauthorizedException();
-  
       try {
         const payload = await this.jwtService.verifyAsync(access, {
           secret: this.configService.get("JWT_SECRET"),
@@ -42,8 +40,6 @@ import {
           refreshPayload.sub,
           refresh,
         );
-
-        console.log("NEW TOKEN: ", newAccessToken)
   
         const isProduction = this.configService.get("NODE_ENV") === "production";
   

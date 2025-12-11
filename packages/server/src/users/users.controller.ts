@@ -16,7 +16,7 @@ import { SmartJwtGuard } from "../auth/smartJwt.guard";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt")) // TODO: Should probably be using Smart Guard instead
   @Get()
   findAll(): Promise<UserResponse[]> {
     return this.usersService.findAll();
