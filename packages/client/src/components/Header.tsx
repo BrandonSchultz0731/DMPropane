@@ -18,13 +18,12 @@ export function Header() {
     mutationFn: async () => {
       await api.post(
         "/auth/logout",
-        {},
-        {
-          withCredentials: true,
-        }
+        {}
       );
     },
     onSuccess: () => {
+      // TODO: do this a better way
+      localStorage.removeItem('auth')
       queryClient.setQueryData(["currentUser"], null);
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       navigate({ to: "/" });
@@ -193,69 +192,69 @@ export function Header() {
         </Group>
       </Container>
       <Drawer
-      opened={mobileMenuOpened}
-      onClose={() => setMobileMenuOpened(false)}
-      title={appConfig.name}
-      padding="md"
-      hiddenFrom="sm"
-      position="right"
-      withinPortal={false}
-    >
-      <Stack gap="md">
-        <Text
-          component={Link}
-          to={ROUTE_PATHS.HOME}
-          onClick={() => setMobileMenuOpened(false)}
-          style={{ cursor: "pointer", fontSize: "1.1rem", fontWeight: 500 }}
-        >
-          Home
-        </Text>
-        <Text
-          component={Link}
-          to={ROUTE_PATHS.FEATURES}
-          onClick={() => setMobileMenuOpened(false)}
-          style={{ cursor: "pointer", fontSize: "1.1rem", fontWeight: 500 }}
-        >
-          Features
-        </Text>
-        <Text
-          component={Link}
-          to={ROUTE_PATHS.PRICING}
-          onClick={() => setMobileMenuOpened(false)}
-          style={{ cursor: "pointer", fontSize: "1.1rem", fontWeight: 500 }}
-        >
-          Pricing
-        </Text>
-        <Text
-          component={Link}
-          to={ROUTE_PATHS.CONTACT}
-          onClick={() => setMobileMenuOpened(false)}
-          style={{ cursor: "pointer", fontSize: "1.1rem", fontWeight: 500 }}
-        >
-          Contact
-        </Text>
-        
-        <Stack gap="sm" mt="xl">
-          <Button
-            fullWidth
-            variant="subtle"
+        opened={mobileMenuOpened}
+        onClose={() => setMobileMenuOpened(false)}
+        title={appConfig.name}
+        padding="md"
+        hiddenFrom="sm"
+        position="right"
+        withinPortal={false}
+      >
+        <Stack gap="md">
+          <Text
             component={Link}
-            to={ROUTE_PATHS.LOGIN}
+            to={ROUTE_PATHS.HOME}
             onClick={() => setMobileMenuOpened(false)}
+            style={{ cursor: "pointer", fontSize: "1.1rem", fontWeight: 500 }}
           >
-            Log in
-          </Button>
-          <Button
-            fullWidth
+            Home
+          </Text>
+          <Text
             component={Link}
-            to={ROUTE_PATHS.SIGNUP}
+            to={ROUTE_PATHS.FEATURES}
             onClick={() => setMobileMenuOpened(false)}
+            style={{ cursor: "pointer", fontSize: "1.1rem", fontWeight: 500 }}
           >
-            Get Started
-          </Button>
+            Features
+          </Text>
+          <Text
+            component={Link}
+            to={ROUTE_PATHS.PRICING}
+            onClick={() => setMobileMenuOpened(false)}
+            style={{ cursor: "pointer", fontSize: "1.1rem", fontWeight: 500 }}
+          >
+            Pricing
+          </Text>
+          <Text
+            component={Link}
+            to={ROUTE_PATHS.CONTACT}
+            onClick={() => setMobileMenuOpened(false)}
+            style={{ cursor: "pointer", fontSize: "1.1rem", fontWeight: 500 }}
+          >
+            Contact
+          </Text>
+
+          <Stack gap="sm" mt="xl">
+            <Button
+              fullWidth
+              variant="subtle"
+              component={Link}
+              to={ROUTE_PATHS.LOGIN}
+              onClick={() => setMobileMenuOpened(false)}
+            >
+              Log in
+            </Button>
+            <Button
+              fullWidth
+              component={Link}
+              to={ROUTE_PATHS.SIGNUP}
+              onClick={() => setMobileMenuOpened(false)}
+            >
+              Get Started
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </Drawer>
+      </Drawer>
     </AppShell.Header>
   );
 }

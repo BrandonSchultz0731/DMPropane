@@ -6,10 +6,7 @@ import { User } from "../users/user.entity";
 import { UsersService } from "../users/users.service";
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
-import { JwtStrategy } from "./jwt.strategy";
-import { LocalStrategy } from "./local.strategy";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { SmartJwtGuard } from "./smartJwt.guard";
 
 @Module({
   imports: [
@@ -19,17 +16,17 @@ import { SmartJwtGuard } from "./smartJwt.guard";
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
+        global: true,
         secret: config.get<string>("JWT_SECRET"),
         signOptions: { expiresIn: config.get("JWT_EXPIRES_IN") },
       }),
     }),
   ],
-  providers: [AuthService, JwtStrategy, LocalStrategy, UsersService, SmartJwtGuard],
+  providers: [AuthService, UsersService],
   controllers: [AuthController],
   exports: [
     AuthService,
-    SmartJwtGuard,
     JwtModule
   ],
 })
-export class AuthModule {}
+export class AuthModule { }

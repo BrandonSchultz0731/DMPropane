@@ -4,51 +4,58 @@ import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
 import { User } from "../users/user.entity";
-import { UserResponse } from "../users/user-response.dto";
 import { ConfigService } from "@nestjs/config";
+import { UsersService } from "../users/users.service";
+import { cleanedUser } from "../utils/cleaner";
+
+type AuthInput = { email: string; password: string }
+type AuthResult = { accessToken: string; id: number; email: string };
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private users: Repository<User>,
+    private readonly usersService: UsersService,
     private jwtService: JwtService,
     private readonly configService: ConfigService
-  ) {}
+  ) { }
 
-  async signup(name: string, email: string, password: string) {
-    const hashed = await bcrypt.hash(password, 10);
+  async authenticate(input: AuthInput): Promise<AuthResult> {
+    const user = await this.validateUser(input)
 
-    const user = this.users.create({
-      name,
-      email,
-      password: hashed,
-    });
+    if (!user) {
+      throw new UnauthorizedException()
+    }
 
-    await this.users.save(user);
-    return new UserResponse(user);
+    return this.signIn(user)
   }
 
-  async login(email: string, password: string) {
-    const user = await this.users.findOne({ where: { email } });
+  async validateUser(input: AuthInput): Promise<User | null> {
+    const user = await this.usersService.findUserByEmail(input.email)
+    if (!user) {
+      return null
+    }
+    const isMatch = await bcrypt.compare(input.password, user?.password)
+    if (isMatch) {
+      return user
+    }
+    return null
+  }
 
-    if (!user) throw new UnauthorizedException("Invalid credentials");
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) throw new UnauthorizedException("Invalid credentials");
-
-    const accessToken = this.jwtService.sign({
+  async signIn(user: User): Promise<AuthResult> {
+    const tokenPayload = {
       sub: user.id,
-      email: user.email,
-    }, { expiresIn: this.configService.get('JWT_EXPIRES_IN') });
-
-
+      email: user.email
+    }
+    const accessToken = await this.jwtService.signAsync(tokenPayload)
+    const cleanUser = cleanedUser(user)
+    if (!cleanUser) {
+      throw new UnauthorizedException()
+    }
     return {
+      ...cleanUser,
       accessToken,
-      user: new UserResponse(user),
-    };
+    }
   }
-
-
- 
 
 }

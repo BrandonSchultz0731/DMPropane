@@ -6,9 +6,11 @@ import { UsersController } from "./users/users.controller";
 import { AuthModule } from "./auth/auth.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ThrottlerModule } from "@nestjs/throttler";
+import { UsersModule } from "./users/users.module";
 
 @Module({
   imports: [
+    UsersModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -53,4 +55,4 @@ import { ThrottlerModule } from "@nestjs/throttler";
   controllers: [UsersController],
   providers: [UsersService],
 })
-export class AppModule {}
+export class AppModule { }

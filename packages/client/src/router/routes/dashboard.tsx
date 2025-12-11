@@ -22,7 +22,7 @@ function DashboardPage() {
     <Box p="xl" maw={1200} mx="auto">
       <Stack gap="lg">
         <Title order={1}>Dashboard</Title>
-        
+
         <Paper shadow="sm" p="lg" radius="md">
           <Stack gap="md">
             <Text size="lg" fw={600}>
@@ -52,7 +52,6 @@ function DashboardPage() {
           </Stack>
         </Paper>
       </Stack>
-      <Button onClick={() => api.get('/users/protected/profile', { withCredentials: true })}>Test</Button>
     </Box>
   );
 }

@@ -31,7 +31,7 @@ export function createProtectedRoute(options: ProtectedRouteOptions) {
     beforeLoad: async () => {
       // Check if user is authenticated before loading the route
       try {
-        const res = await api.get("/auth/me", { withCredentials: true });
+        const res = await api.get("/auth/me");
         if (!res.data) {
           throw redirect({
             to: "/login",
