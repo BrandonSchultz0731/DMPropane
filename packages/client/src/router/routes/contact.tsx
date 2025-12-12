@@ -10,7 +10,6 @@ import {
   Stack,
   Grid,
   useMantineTheme,
-  Group,
 } from "@mantine/core";
 
 function ContactPage() {
