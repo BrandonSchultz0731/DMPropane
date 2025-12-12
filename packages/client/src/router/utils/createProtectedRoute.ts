@@ -2,6 +2,7 @@ import { createRoute, redirect } from "@tanstack/react-router";
 import { rootRoute } from "../routes/root";
 import { queryClient } from "../../config/queryClient";
 import { userQueryOptions } from "../../hooks/useGetUsers";
+import { ROUTE_PATHS } from "../../routes/routes";
 
 interface ProtectedRouteOptions {
   path: string;
@@ -35,7 +36,7 @@ export function createProtectedRoute(options: ProtectedRouteOptions) {
 
         if (!user) {
           throw redirect({
-            to: "/login",
+            to: ROUTE_PATHS.LOGIN,
             search: {
               redirect: redirectPath,
             },
@@ -50,7 +51,7 @@ export function createProtectedRoute(options: ProtectedRouteOptions) {
           throw error;
         }
         throw redirect({
-          to: "/login",
+          to: ROUTE_PATHS.LOGIN,
           search: {
             redirect: redirectPath,
           },

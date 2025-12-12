@@ -1,8 +1,10 @@
 export const COLORS = {
   primary: "brand.6",
-  dark: "#111111",
-  light: "#ffffff",
-  muted: "#f6f7f9",
+  dark: "#2A1E10", // Deep earth brown
+  light: "#FEF5ED", // Cream
+  muted: "#F5F1E8", // Light sand
+  earth: "#7D5F3F", // Medium brown
+  forest: "#3D6B3D", // Forest green
 };
 
 export const SPACING = {
