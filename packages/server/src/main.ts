@@ -1,19 +1,22 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import cookieParser from "cookie-parser";
+import { ConfigService } from "@nestjs/config";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  const configService = app.get(ConfigService);
+  const allowedHostsString = configService.get<string>("CORS_ORIGIN") || ''
+  const origin = JSON.parse(allowedHostsString);
+  const port = configService.get<number>("PORT") || 3000;
   app.enableCors({
-    origin: ['https://dmpropane-production.up.railway.app', 'http://localhost:5173'],
+    origin,
     credentials: true,
   });
 
-  // Use cookie parser middleware
   app.use(cookieParser());
 
-  await app.listen(3000);
-  console.log("Server is running!");
+  await app.listen(port);
+  console.log(`Server is running on port ${port}`);
 }
 bootstrap();
