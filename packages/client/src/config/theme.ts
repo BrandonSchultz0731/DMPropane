@@ -4,141 +4,105 @@ export const theme = createTheme({
   primaryColor: "brand",
 
   colors: {
-    // Main brand gradient shades
+    // Main brand - earthy terracotta/orange
     brand: [
-      "#fff4ea", // 0
-      "#ffe3cc", // 1
-      "#ffc799", // 2
-      "#ffa366", // 3
-      "#ff8a3d", // 4
-      "#ff7a1f", // 5
-      "#ff6b00", // 6
-      "#e65f00", // 7
-      "#cc5500", // 8
-      "#994000", // 9
+      "#FEF5ED", // 0 - lightest cream
+      "#FCE8D5", // 1
+      "#F8D4B3", // 2
+      "#F4C08F", // 3
+      "#E8A569", // 4
+      "#D6893F", // 5
+      "#C46D2A", // 6 - primary
+      "#A8551F", // 7
+      "#8B4513", // 8 - saddle brown
+      "#6B3410", // 9 - darkest
     ],
 
-    gradient: [
-      "#FF6B6B",
-      "#FF7C5F",
-      "#FF8D54",
-      "#FF9E48",
-      "#FFAF3D",
-      "#FFC032",
-      "#FFD227",
-      "#FFD93D",
-      "#FFE65A",
-      "#FFF179",
+    // Earth tones - browns and tans
+    earth: [
+      "#F5F1E8", // 0 - light sand
+      "#E8DFD0", // 1
+      "#D4C4A8", // 2
+      "#B8A082", // 3
+      "#9C7C5C", // 4
+      "#7D5F3F", // 5
+      "#5C4228", // 6
+      "#4A3420", // 7
+      "#3A2818", // 8
+      "#2A1E10", // 9
     ],
 
-    // Semantic colors for homepage visuals
-    lightRed: [
-      "#FFDAD6",
-      "#FFB4AA",
-      "#FF8C7F",
-      "#FF6555",
-      "#FF3E2B",
-      "#FF1500",
-      "#E60F00",
-      "#CC0A00",
-      "#990500",
-      "#660300",
-    ],
-    mediumRed: [
-      "#FF8A3D",
-      "#FF7A1F",
-      "#FF6B00",
-      "#E65F00",
-      "#CC5500",
-      "#994000",
-      "#802F00",
-      "#661F00",
-      "#4C1400",
-      "#330900",
+    // Natural greens - forest and sage
+    forest: [
+      "#F0F5F0", // 0
+      "#D9E8D9", // 1
+      "#B3D1B3", // 2
+      "#8DB98D", // 3
+      "#5A8A5A", // 4
+      "#3D6B3D", // 5
+      "#2D502D", // 6
+      "#1F3A1F", // 7
+      "#152815", // 8
+      "#0D1A0D", // 9
     ],
 
-    lightYellow: [
-      "#FFF9E6",
-      "#FFF3CC",
-      "#FFED99",
-      "#FFE566",
-      "#FFDE33",
-      "#FFD93D",
-      "#FFC700",
-      "#E6B800",
-      "#CC9900",
-      "#997300",
-    ],
-    mediumYellow: [
-      "#FFD93D",
-      "#FFC032",
-      "#FFB100",
-      "#E6A000",
-      "#CC8F00",
-      "#997000",
-      "#805500",
-      "#664000",
-      "#4C2B00",
-      "#331700",
+    // Sage green accents
+    sage: [
+      "#F4F6F2", // 0
+      "#E8EDE0", // 1
+      "#D1DBC1", // 2
+      "#B5C79A", // 3
+      "#9AB373", // 4
+      "#7A9559", // 5
+      "#5F7445", // 6
+      "#4A5A36", // 7
+      "#364028", // 8
+      "#252C1B", // 9
     ],
 
-    lightGreen: [
-      "#E6F9F0",
-      "#CCF3E1",
-      "#99E6C3",
-      "#66D9A5",
-      "#33CC87",
-      "#00BF69",
-      "#00A65C",
-      "#008F4F",
-      "#006D3F",
-      "#004B2F",
-    ],
-    mediumGreen: [
-      "#00BF69",
-      "#00A65C",
-      "#008F4F",
-      "#007A43",
-      "#006636",
-      "#004D28",
-      "#00371B",
-      "#00240F",
-      "#001204",
-      "#000000",
+    // Warm amber/orange for accents
+    amber: [
+      "#FFF8ED", // 0
+      "#FFEED1", // 1
+      "#FFDAA3", // 2
+      "#FFC575", // 3
+      "#FFB047", // 4
+      "#E8961A", // 5
+      "#CC7A0F", // 6
+      "#A85F0C", // 7
+      "#854709", // 8
+      "#663506", // 9
     ],
 
-    lightBlue: [
-      "#E6F0FF",
-      "#CCE0FF",
-      "#99C2FF",
-      "#66A3FF",
-      "#3385FF",
-      "#0066FF",
-      "#0055E6",
-      "#0044CC",
-      "#003399",
-      "#002266",
-    ],
-    mediumBlue: [
-      "#0066FF",
-      "#0055E6",
-      "#0044CC",
-      "#003399",
-      "#002266",
-      "#001144",
-      "#000933",
-      "#000522",
-      "#000311",
-      "#000000",
+    // Deep browns for text and accents
+    brown: [
+      "#F5F0E8", // 0
+      "#E8DCC8", // 1
+      "#D4B890", // 2
+      "#B8945F", // 3
+      "#9C6F3F", // 4
+      "#7D562F", // 5
+      "#5C3F22", // 6
+      "#4A3219", // 7
+      "#3A2612", // 8
+      "#2A1B0C", // 9
     ],
   },
 
-  fontFamily: "Inter, system-ui, sans-serif",
+  fontFamily: "'Inter', 'Georgia', serif, system-ui, sans-serif",
 
   headings: {
-    fontFamily: "Inter, system-ui, sans-serif",
+    fontFamily: "'Inter', 'Georgia', serif, system-ui, sans-serif",
     fontWeight: "700",
   },
 
-  defaultRadius: "lg",
+  defaultRadius: "md",
+
+  shadows: {
+    xs: "0 1px 3px rgba(106, 52, 16, 0.1)",
+    sm: "0 2px 6px rgba(106, 52, 16, 0.12)",
+    md: "0 4px 12px rgba(106, 52, 16, 0.15)",
+    lg: "0 8px 24px rgba(106, 52, 16, 0.18)",
+    xl: "0 16px 48px rgba(106, 52, 16, 0.2)",
+  },
 });
