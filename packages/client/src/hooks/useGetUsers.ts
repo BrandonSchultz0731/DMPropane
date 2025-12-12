@@ -16,12 +16,9 @@ export const useLogin = () => {
   return useMutation<UserResponse, Error, LoginForm>({
     mutationFn: async (form) => {
       const res = await api.post("/auth/login", form);
-      const token = res.data.accessToken;
-      // TODO: do this a better way
-      if (token) {
-        localStorage.setItem('auth', token)
-      }
-      return res.data.user;
+      // Token is now stored in httpOnly cookie automatically by the server
+      // No need to manually store it in localStorage
+      return res.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
