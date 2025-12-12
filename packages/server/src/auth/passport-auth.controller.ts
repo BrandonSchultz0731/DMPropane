@@ -46,7 +46,7 @@ export class PassportAuthController {
             httpOnly: true, // Prevents JavaScript access (XSS protection)
             secure: isProduction, // Only send over HTTPS in production
             sameSite: isProduction ? 'none' as const : 'lax' as const, // CSRF protection
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (match JWT expiration)
+            maxAge: this.configService.get('JWT_MAX_AGE_MS'),
             path: '/',
         }
 
