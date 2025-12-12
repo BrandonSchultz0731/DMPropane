@@ -16,8 +16,8 @@ import { UsersModule } from "./users/users.module";
     }),
     ThrottlerModule.forRoot([
       {
-        ttl: 60000, // Time window in milliseconds (1 minute)
-        limit: 5, // Maximum number of requests per time window
+        ttl: 60000,
+        limit: 5,
       },
     ]),
     TypeOrmModule.forRootAsync({

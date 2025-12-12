@@ -22,15 +22,13 @@ export function Header() {
       );
     },
     onSuccess: () => {
-      // Cookie is cleared by the server, just clear client-side state
       queryClient.setQueryData(["currentUser"], null);
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       navigate({ to: "/" });
     },
   });
 
-  // Show loading state or nothing while checking auth
-  if (isLoading) {
+  if (isLoading && !user) {
     return (
       <AppShell.Header>
         <Container size="lg" h="100%">
@@ -61,7 +59,6 @@ export function Header() {
     );
   }
 
-  // Authenticated Header
   if (user) {
     return (
       <AppShell.Header>
@@ -126,7 +123,6 @@ export function Header() {
     );
   }
 
-  // Unauthenticated Header (existing header)
   return (
     <AppShell.Header>
       <Container size="lg" h="100%">
