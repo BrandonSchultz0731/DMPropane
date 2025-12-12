@@ -1,12 +1,13 @@
 import { createRoute, redirect } from "@tanstack/react-router";
 import { rootRoute } from "../routes/root";
-import { api } from "../../api";
+import { queryClient } from "../../config/queryClient";
+import { userQueryOptions } from "../../hooks/useGetUsers";
 
 interface ProtectedRouteOptions {
   path: string;
   component: any; // Route component type
   redirectTo?: string;
-  [key: string]: any; // Allow other route options
+  [key: string]: unknown;
 }
 
 /**
@@ -29,10 +30,10 @@ export function createProtectedRoute(options: ProtectedRouteOptions) {
     path,
     component,
     beforeLoad: async () => {
-      // Check if user is authenticated before loading the route
       try {
-        const res = await api.get("/auth/me");
-        if (!res.data) {
+        const user = await queryClient.fetchQuery(userQueryOptions());
+
+        if (!user) {
           throw redirect({
             to: "/login",
             search: {
@@ -40,7 +41,8 @@ export function createProtectedRoute(options: ProtectedRouteOptions) {
             },
           });
         }
-        return { user: res.data };
+
+        return { user };
       } catch (error: any) {
         // If authentication fails (401, network error, etc.), redirect to login
         if (error?.to) {

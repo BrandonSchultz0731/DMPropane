@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, queryOptions } from "@tanstack/react-query";
 import { api } from "../api";
 import { useNavigate } from "@tanstack/react-router";
 import type { UserResponse } from "@brandon0731/types";
@@ -9,6 +9,17 @@ interface LoginForm {
   password: string;
 }
 
+export const userQueryOptions = () => queryOptions({
+  queryKey: ["currentUser"],
+  queryFn: async (): Promise<UserResponse | null> => {
+    const res = await api.get("/auth/me");
+    return res.data;
+  },
+  retry: false,
+  refetchOnWindowFocus: false,
+  placeholderData: (previousData: UserResponse | null | undefined) => previousData,
+});
+
 export const useLogin = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -16,8 +27,6 @@ export const useLogin = () => {
   return useMutation<UserResponse, Error, LoginForm>({
     mutationFn: async (form) => {
       const res = await api.post("/auth/login", form);
-      // Token is now stored in httpOnly cookie automatically by the server
-      // No need to manually store it in localStorage
       return res.data;
     },
     onSuccess: () => {
@@ -28,13 +37,5 @@ export const useLogin = () => {
 };
 
 export const useUser = () => {
-  return useQuery<UserResponse | null>({
-    queryKey: ["currentUser"],
-    queryFn: async () => {
-      const res = await api.get("/auth/me");
-      return res.data;
-    },
-    staleTime: 5 * 60 * 1000, // cache for 5 minutes
-    retry: false, // don't retry if 401
-  });
+  return useQuery(userQueryOptions());
 };

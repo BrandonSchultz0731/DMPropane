@@ -11,7 +11,6 @@ export class TokenBlacklistService {
   private cleanupInterval: NodeJS.Timeout | null = null;
 
   constructor() {
-    // Clean up expired tokens every hour
     this.cleanupInterval = setInterval(() => {
       this.cleanupExpiredTokens();
     }, 60 * 60 * 1000);
@@ -26,7 +25,6 @@ export class TokenBlacklistService {
       if (parts.length !== 3) {
         return null;
       }
-      // Decode the payload (second part)
       const payload = Buffer.from(parts[1], 'base64').toString('utf-8');
       return JSON.parse(payload);
     } catch (error) {
@@ -39,19 +37,16 @@ export class TokenBlacklistService {
    */
   async blacklistToken(token: string): Promise<void> {
     try {
-      // Decode the token to get its expiration
       const decoded = this.decodeTokenPayload(token);
 
       if (decoded && decoded.exp) {
-        const expirationTime = decoded.exp * 1000; // Convert to milliseconds
+        const expirationTime = decoded.exp * 1000;
         this.blacklistedTokens.add(token);
         this.tokenExpirationMap.set(token, expirationTime);
       } else {
-        // If we can't decode it, just add it anyway (better safe than sorry)
         this.blacklistedTokens.add(token);
       }
     } catch (error) {
-      // If decoding fails, still blacklist it
       this.blacklistedTokens.add(token);
     }
   }
@@ -60,18 +55,15 @@ export class TokenBlacklistService {
    * Check if a token is blacklisted
    */
   async isTokenBlacklisted(token: string): Promise<boolean> {
-    // First check if token exists in blacklist
     if (!this.blacklistedTokens.has(token)) {
       return false;
     }
 
-    // Check if token has expired (cleanup might not have run yet)
     const expirationTime = this.tokenExpirationMap.get(token);
     if (expirationTime && Date.now() > expirationTime) {
-      // Token expired, remove from blacklist
       this.blacklistedTokens.delete(token);
       this.tokenExpirationMap.delete(token);
-      return false; // Expired tokens are effectively not blacklisted
+      return false;
     }
 
     return true;

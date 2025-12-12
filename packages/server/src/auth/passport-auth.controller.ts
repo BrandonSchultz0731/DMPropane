@@ -40,19 +40,17 @@ export class PassportAuthController {
 
         const authResult = await this.authService.signIn(user)
 
-        // Set httpOnly cookie with the token
         const isProduction = this.configService.get('NODE_ENV') === 'production'
         const cookieOptions = {
-            httpOnly: true, // Prevents JavaScript access (XSS protection)
-            secure: isProduction, // Only send over HTTPS in production
-            sameSite: isProduction ? 'none' as const : 'lax' as const, // CSRF protection
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: isProduction ? 'none' as const : 'lax' as const,
             maxAge: this.configService.get('JWT_MAX_AGE_MS'),
             path: '/',
         }
 
         response.cookie('access_token', authResult.accessToken, cookieOptions)
 
-        // Return user data without the token (token is in cookie)
         const { accessToken, ...userData } = authResult
         return userData
     }
@@ -71,25 +69,22 @@ export class PassportAuthController {
         @Req() request: any,
         @Res({ passthrough: true }) response: any
     ) {
-        // Extract the token from cookie or Authorization header
         const token = request?.cookies?.['access_token'] ||
             request?.headers?.authorization?.replace('Bearer ', '') ||
             null;
 
         if (token) {
-            // Add token to blacklist
             await this.tokenBlacklistService.blacklistToken(token);
         }
 
         request.user = null
 
-        // Clear the access token cookie
         const isProduction = this.configService.get('NODE_ENV') === 'production'
         response.cookie('access_token', '', {
             httpOnly: true,
             secure: isProduction,
             sameSite: isProduction ? 'none' as const : 'lax' as const,
-            maxAge: 0, // Immediately expire
+            maxAge: 0,
             path: '/',
         })
 
