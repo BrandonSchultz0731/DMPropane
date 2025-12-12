@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
     },
     preview: {
       allowedHosts: ["dmpropane-production.up.railway.app"],
-      port: Number(process.env.PORT) || 4173,
+      port: Number(env.PORT) || 4173,
       host: true,
       proxy: {
         '/api': {
