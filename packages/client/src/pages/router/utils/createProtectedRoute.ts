@@ -1,8 +1,9 @@
 import { createRoute, redirect } from "@tanstack/react-router";
 import { rootRoute } from "../routes/root";
-import { queryClient } from "../../config/queryClient";
-import { userQueryOptions } from "../../hooks/useGetUsers";
+import { queryClient } from "../../../config/queryClient";
+import { userQueryOptions } from "../../../hooks/useGetUsers";
 import { ROUTE_PATHS } from "../../routes/routes";
+import type { UserResponse } from "@brandon0731/types";
 
 interface ProtectedRouteOptions {
   path: string;
@@ -32,7 +33,17 @@ export function createProtectedRoute(options: ProtectedRouteOptions) {
     component,
     beforeLoad: async () => {
       try {
-        const user = await queryClient.fetchQuery(userQueryOptions());
+        // First check if we have cached data
+        const cachedUser = queryClient.getQueryData<UserResponse | null>(userQueryOptions().queryKey);
+
+        // If we have cached data, use it (component's useQuery will also use it)
+        // Otherwise, fetch it (and component's useQuery will use the same fetch)
+        let user: UserResponse | null;
+        if (cachedUser !== undefined) {
+          user = cachedUser;
+        } else {
+          user = await queryClient.fetchQuery(userQueryOptions());
+        }
 
         if (!user) {
           throw redirect({

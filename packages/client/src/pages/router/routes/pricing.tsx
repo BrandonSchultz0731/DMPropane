@@ -1,6 +1,6 @@
 import { createRoute, Link } from "@tanstack/react-router";
 import { rootRoute } from "./root";
-import { ROUTES } from "../../routes/routes";
+import { ROUTE_PATHS, ROUTES } from "../../routes/routes";
 import {
   Box,
   Container,
@@ -195,7 +195,7 @@ function PricingPage() {
 
                     <Button
                       component={Link}
-                      to={ROUTES.CONTACT}
+                      to={`${ROUTE_PATHS.SIGNUP}`}
                       fullWidth
                       size="md"
                       radius="md"

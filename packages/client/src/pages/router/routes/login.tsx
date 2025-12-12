@@ -12,21 +12,20 @@ import {
   Paper,
   useMantineTheme,
 } from "@mantine/core";
-import { useState } from "react";
-import { useLogin } from "../../hooks/useGetUsers";
-import { ROUTES } from "../../routes/routes";
+import { useRef } from "react";
+import { useLogin } from "../../../hooks/useGetUsers";
+import { ROUTE_PATHS, ROUTES } from "../../routes/routes";
 
 function LoginPage() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const theme = useMantineTheme();
   const loginMutation = useLogin();
 
-  const handleChange = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  };
-
   const handleSubmit = () => {
-    loginMutation.mutate(form);
+    const email = emailRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+    loginMutation.mutate({ email, password });
   };
 
   return (
@@ -100,8 +99,7 @@ function LoginPage() {
                 placeholder="Enter your email"
                 size="md"
                 required
-                value={form.email}
-                onChange={(e) => handleChange("email", e.currentTarget.value)}
+                ref={emailRef}
                 styles={{
                   label: { fontWeight: 600, color: theme.colors.brown[7] },
                 }}
@@ -113,8 +111,7 @@ function LoginPage() {
                 type="password"
                 size="md"
                 required
-                value={form.password}
-                onChange={(e) => handleChange("password", e.currentTarget.value)}
+                ref={passwordRef}
                 styles={{
                   label: { fontWeight: 600, color: theme.colors.brown[7] },
                 }}
@@ -148,7 +145,7 @@ function LoginPage() {
               </Text>
               <Text
                 component={Link}
-                to={ROUTES.SIGNUP}
+                to={ROUTE_PATHS.SIGNUP}
                 size="sm"
                 c="brand.6"
                 fw={600}

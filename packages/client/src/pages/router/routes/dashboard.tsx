@@ -1,18 +1,16 @@
 import { Box, Container, Stack, Title, Text, Paper, Grid, useMantineTheme } from "@mantine/core";
-import { useUser } from "../../hooks/useGetUsers";
+import { useUser } from "../../../hooks/useGetUsers";
 import { createProtectedRoute } from "../utils/createProtectedRoute";
 import { ROUTE_PATHS } from "../../routes/routes";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
 
 function DashboardPage() {
-  const { data: user, isLoading } = useUser();
+  const { data: user, isLoading, isFetching } = useUser();
   const theme = useMantineTheme();
 
-  if (isLoading) {
-    return (
-      <Box p="xl">
-        <Text>Loading...</Text>
-      </Box>
-    );
+  // Show loading if initial load or if refetching (e.g., on page refresh)
+  if (isLoading || (isFetching && !user)) {
+    return <LoadingSpinner />;
   }
 
   if (!user) {

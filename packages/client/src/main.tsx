@@ -6,7 +6,7 @@ import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { theme } from "./config/theme.ts";
 import { RouterProvider } from "@tanstack/react-router";
-import { router } from "./router/router.ts";
+import { router } from "./pages/router/router.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./config/queryClient.ts";
 
