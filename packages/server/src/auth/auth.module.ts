@@ -9,6 +9,8 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PassportAuthController } from "./passport-auth.controller";
 import { LocalStrategry } from "./strategies/local.strategy";
 import { JwtStrategy } from "./strategies/jwt.strategy";
+import { TokenBlacklistService } from "./token-blacklist.service";
+import { TokenBlacklistGuard } from "./guards/token-blacklist.guard";
 
 @Module({
   imports: [
@@ -24,7 +26,7 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
       }),
     }),
   ],
-  providers: [AuthService, UsersService, LocalStrategry, JwtStrategy],
+  providers: [AuthService, UsersService, LocalStrategry, JwtStrategy, TokenBlacklistService, TokenBlacklistGuard],
   controllers: [PassportAuthController],
   exports: [
     AuthService,

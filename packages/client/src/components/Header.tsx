@@ -22,8 +22,7 @@ export function Header() {
       );
     },
     onSuccess: () => {
-      // TODO: do this a better way
-      localStorage.removeItem('auth')
+      // Cookie is cleared by the server, just clear client-side state
       queryClient.setQueryData(["currentUser"], null);
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
       navigate({ to: "/" });
