@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postLogout } from "../api";
 import { invalidateUser, useUser } from "../hooks/useGetUsers";
 import { useState } from "react";
-import { ROUTE_PATHS } from "../routes/routes";
+import { ROUTE_PATHS } from "../pages/routes/routes";
 
 export function Header() {
   const { data: user, isLoading } = useUser();
@@ -37,6 +37,7 @@ export function Header() {
         style={{
           backgroundColor: "white",
           borderBottom: `1px solid ${theme.colors.earth[1]}`,
+          animation: "fadeIn 0.3s ease-in",
         }}
       >
         <Container size="lg" h="100%">
@@ -78,6 +79,7 @@ export function Header() {
         style={{
           backgroundColor: "white",
           borderBottom: `1px solid ${theme.colors.earth[1]}`,
+          animation: "fadeIn 0.3s ease-in",
         }}
       >
         <Container size="lg" h="100%">
@@ -203,6 +205,7 @@ export function Header() {
       style={{
         backgroundColor: "white",
         borderBottom: `1px solid ${theme.colors.earth[1]}`,
+        animation: "fadeIn 0.3s ease-in",
       }}
     >
       <Container size="lg" h="100%">
@@ -211,8 +214,8 @@ export function Header() {
           <Link to={ROUTE_PATHS.HOME} style={{ textDecoration: "none" }}>
             <Group gap="xs" style={{ cursor: "pointer" }}>
               <Box
-                w={40}
-                h={40}
+                w={50}
+                h={50}
                 style={{
                   backgroundColor: theme.colors.brand[6],
                   borderRadius: 8,
@@ -226,7 +229,7 @@ export function Header() {
                 onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
               >
-                P
+                D&M
               </Box>
 
               <Text size="lg" fw={700} visibleFrom="xs" style={{ color: theme.colors.brown[9] }}>

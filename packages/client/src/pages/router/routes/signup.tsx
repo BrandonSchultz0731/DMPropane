@@ -12,7 +12,7 @@ import {
   Paper,
   useMantineTheme,
 } from "@mantine/core";
-import { ROUTES } from "../../routes/routes";
+import { ROUTE_PATHS, ROUTES } from "../../routes/routes";
 
 function SignUpPage() {
   const theme = useMantineTheme();
@@ -134,7 +134,7 @@ function SignUpPage() {
               </Text>
               <Text
                 component={Link}
-                to={ROUTES.LOGIN}
+                to={ROUTE_PATHS.LOGIN}
                 size="sm"
                 c="brand.6"
                 fw={600}

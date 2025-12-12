@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient, queryOptions, QueryClient } from
 import { getLoggedInUser, postLogin } from "../api";
 import { useNavigate } from "@tanstack/react-router";
 import type { UserResponse } from "@brandon0731/types";
-import { ROUTE_PATHS } from "../routes/routes";
+import { ROUTE_PATHS } from "../pages/routes/routes";
 
 interface LoginForm {
   email: string;
@@ -14,6 +14,7 @@ export const userQueryOptions = () => queryOptions({
   queryFn: async (): Promise<UserResponse | null> => (await getLoggedInUser()),
   retry: false,
   refetchOnWindowFocus: false,
+  staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes to prevent duplicate fetches
   placeholderData: (previousData: UserResponse | null | undefined) => previousData,
 });
 

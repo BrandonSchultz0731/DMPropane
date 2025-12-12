@@ -8,11 +8,29 @@ import {
   Stack,
   Text,
   Title,
-  Paper,
   useMantineTheme,
   Group,
 } from "@mantine/core";
 import { ROUTES } from "../../routes/routes";
+import { ServiceContainer, type Service } from "../../../components/ServiceContainer";
+
+const SERVICES: Service[] = [
+  {
+    title: "Propane Delivery",
+    description: "Flexible, reliable delivery schedules tailored to your needs. Never run out with our smart monitoring system.",
+    icon: "🚚",
+  },
+  {
+    title: "Tank Installation",
+    description: "Professional installation and maintenance for residential and commercial properties.",
+    icon: "🔧",
+  },
+  {
+    title: "24/7 Support",
+    description: "Round-the-clock customer service to assist with all your propane needs and emergencies.",
+    icon: "📞",
+  },
+]
 
 function HomePage() {
   const theme = useMantineTheme();
@@ -184,68 +202,7 @@ function HomePage() {
             How We Can Help
           </Title>
         </Box>
-
-        <Grid gutter={40}>
-          {[
-            {
-              title: "Propane Delivery",
-              desc: "Flexible, reliable delivery schedules tailored to your needs. Never run out with our smart monitoring system.",
-              icon: "🚚",
-              color: theme.colors.brand[6],
-            },
-            {
-              title: "Tank Installation",
-              desc: "Professional installation and maintenance for residential and commercial properties.",
-              icon: "🔧",
-              color: theme.colors.earth[6],
-            },
-            {
-              title: "24/7 Support",
-              desc: "Round-the-clock customer service to assist with all your propane needs and emergencies.",
-              icon: "📞",
-              color: theme.colors.forest[5],
-            },
-          ].map((service) => (
-            <Grid.Col span={{ base: 12, md: 4 }} key={service.title}>
-              <Paper
-                shadow="sm"
-                radius="md"
-                p="xl"
-                style={{
-                  transition: "all 0.3s ease",
-                  cursor: "pointer",
-                  textAlign: "center",
-                  border: `1px solid ${theme.colors.earth[1]}`,
-                  backgroundColor: "white",
-                  height: "100%",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-8px)";
-                  e.currentTarget.style.boxShadow = `0 12px 40px ${service.color}15`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0px)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: "3rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  {service.icon}
-                </Text>
-                <Title order={3} mb="md" style={{ color: theme.colors.brown[9] }}>
-                  {service.title}
-                </Title>
-                <Text c="dimmed" style={{ lineHeight: 1.6 }}>
-                  {service.desc}
-                </Text>
-              </Paper>
-            </Grid.Col>
-          ))}
-        </Grid>
+        <ServiceContainer services={SERVICES} />
       </Container>
 
       {/* CTA Section */}
