@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'https://dmpropane-production.up.railway.app',
+    origin: ['https://dmpropane-production.up.railway.app', 'http://localhost:5173'],
     credentials: true,
   });
 
